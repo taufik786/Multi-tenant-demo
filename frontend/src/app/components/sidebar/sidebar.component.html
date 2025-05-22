@@ -1,0 +1,23 @@
+<div class="sidebar">
+  <ul>
+    <li *ngFor="let route of routes">
+      <a href="#">{{ route.parent }}</a>
+
+      <ul *ngIf="route.children?.length">
+        <li *ngFor="let child of route.children">
+          <a href="#">-- {{ child.child }}</a>
+
+          <ul *ngIf="child.subchildren?.length">
+            <li *ngFor="let sub of child.subchildren">
+              <a (click)="goToPage(route.parent, child.child, sub)" style="cursor: pointer;">
+                &nbsp;&nbsp;&nbsp;&nbsp;{{ sub }}
+              </a>
+            </li>
+          </ul>
+
+        </li>
+      </ul>
+
+    </li>
+  </ul>
+</div>

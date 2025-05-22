@@ -1,0 +1,138 @@
+<!-- <div style="padding: 20px; max-width: 700px">
+  <h2>Admin Route Builder</h2>
+
+  <div>
+    <input [(ngModel)]="newParent" placeholder="New Parent Route" />
+    <button (click)="addParent()">Add Parent</button>
+  </div>
+
+  <div *ngFor="let route of routes; let pIndex = index" style="margin-top: 20px;">
+    <h3>{{ route.parent }}</h3>
+
+    <input [(ngModel)]="newChild" placeholder="New Child Route for {{ route.parent }}" />
+    <button (click)="addChild(pIndex)">Add Child</button>
+
+    <div *ngFor="let child of route.children; let cIndex = index" style="margin-left: 20px; margin-top: 10px;">
+      <strong>{{ child.child }}</strong>
+
+      <div>
+        <input
+          [(ngModel)]="newSubchild"
+          placeholder="Subchild for {{ child.child }}"
+        />
+        <button (click)="addSubchild(pIndex, cIndex)">Add Subchild</button>
+      </div>
+
+      <ul>
+        <li *ngFor="let sub of child.subchildren">{{ sub }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <button (click)="submit()" style="margin-top: 30px">Submit</button>
+</div> -->
+
+
+
+<!-- route-form.component.html -->
+<div class="route-form">
+  <h3>Add New Route</h3>
+
+  <!-- Parent Input -->
+  <div>
+    <label>Parent:</label>
+    <input type="text" [(ngModel)]="newParent" placeholder="Enter parent" />
+    <button (click)="addParent()">Add Parent</button>
+  </div>
+
+  <!-- Child Input (only if parent is selected) -->
+  <div *ngIf="selectedParent">
+    <label>Child under '{{ selectedParent }}':</label>
+    <input type="text" [(ngModel)]="newChild" placeholder="Enter child" />
+    <button (click)="addChild()">Add Child</button>
+  </div>
+
+  <!-- Subchild Input (only if child is selected) -->
+  <div *ngIf="selectedChild">
+    <label>Subchild under '{{ selectedChild }}':</label>
+    <input type="text" [(ngModel)]="newSubchild" placeholder="Enter subchild" />
+    <button (click)="addSubchild()">Add Subchild</button>
+  </div>
+
+  <hr />
+  <button type="button" (click)="submitRoute()">Submit</button>
+  <hr />
+
+  <h4>Routes Preview:</h4>
+  <pre>{{ routes | json }}</pre>
+</div>
+
+
+<hr>
+
+
+<button type="button" (click)="open()">Add Form</button>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Create form design</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="serviceForm" (ngSubmit)="onServieForm()">
+      <div class="mb-3">
+        <label for="name">Name</label>
+        <div class="input-group">
+          <input type="text" formControlName="name" class="form-control" placeholder="Enter Your Name" />
+        </div>
+        <div *ngIf="submited && serviceForm.get('name').errors">
+          <p class="error" *ngIf="serviceForm.get('name').errors.required">Name is required</p>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="email">Email</label>
+        <div class="input-group">
+          <input type="email" formControlName="email" class="form-control" placeholder="Enter Your Email" />
+        </div>
+        <div *ngIf="submited && serviceForm.get('email').errors">
+          <p class="error" *ngIf="serviceForm.get('email').errors.required">Email is required</p>
+          <p class="error" *ngIf="serviceForm.get('email').errors.pattern">Email must be a valid email address</p>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="Phone">Phone</label>
+        <div class="input-group">
+          <input type="text" formControlName="phone" class="form-control" placeholder="Enter Your Phone Number" />
+        </div>
+        <div *ngIf="submited && serviceForm.get('phone').errors">
+          <p class="error" *ngIf="serviceForm.get('phone').errors.required">Phone Number is required</p>
+          <p class="error" *ngIf="serviceForm.get('phone').errors.pattern">Phone Number must be valid</p>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="address">Address</label>
+        <div class="input-group">
+          <input type="text" formControlName="address" class="form-control" placeholder="Enter Your Address" />
+        </div>
+        <div *ngIf="submited && serviceForm.get('address').errors">
+          <p class="error" *ngIf="serviceForm.get('address').errors.required">Address Number is required</p>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="name">Message</label>
+        <div class="input-group">
+          <textarea class="form-control" formControlName="message" rows="2" placeholder="Enter Your Message In Detail"
+            style="resize: none;"></textarea>
+        </div>
+        <div *ngIf="submited && serviceForm.get('message').errors">
+          <p class="error" *ngIf="serviceForm.get('message').errors.required">Address Number is required</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" [disabled]="formSubmitted" class="btn btn-danger" (click)="modal.dismiss('cancel click')">Cancel</button>
+        <button type="submit" [disabled]="formSubmitted" class="btn btn-primary">Apply</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<!-- Modal End For Services Apply  -->
