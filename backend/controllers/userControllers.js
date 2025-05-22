@@ -30,13 +30,21 @@ exports.layout = async (req, res) => {
   }
 };
 
-exports.addRoutes = async(req, res) => {
+exports.addRoutes = async (req, res) => {
   console.log("Request body:", req.body);
+
   try {
-    const newRoute = new routesModel(req.body);
-    const savedRoute = await newRoute.save();
-    res.status(201).json(savedRoute);
+    // Validate input is an array
+    if (!Array.isArray(req.body)) {
+      return res.status(400).json({ error: 'Expected an array of route objects' });
+    }
+
+    // Insert multiple documents
+    const savedRoutes = await routesModel.insertMany(req.body);
+    res.status(201).json(savedRoutes);
   } catch (error) {
-    res.status(400).json({ error: 'Failed to create route', details: error.message });
+    console.error("Insert error:", error);
+    res.status(400).json({ error: 'Failed to insert routes', details: error.message });
   }
 };
+
